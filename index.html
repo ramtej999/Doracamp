@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DORA Camp | Campus Delivery</title>
+    <!-- FAVICON ADDED BELOW -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='0' y='0' width='100' height='100' fill='%23ccff00'/><rect x='5' y='5' width='90' height='90' fill='none' stroke='black' stroke-width='10'/><path d='M30 40h40v40H30z' fill='none' stroke='black' stroke-width='8'/><path d='M40 40V30a10 10 0 0 1 20 0v10' fill='none' stroke='black' stroke-width='8'/><rect x='40' y='55' width='20' height='15' fill='none' stroke='black' stroke-width='6'/></svg>">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-green': '#ccff00',
+                        'brutal-grey': '#f3f4f6',
+                        'dark-grey': '#1f2937',
+                    },
+                    fontFamily: {
+                        'sans': ['Space Grotesk', 'sans-serif'],
+                        'display': ['Archivo Black', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'hard': '5px 5px 0px 0px #000000',
+                        'hard-sm': '3px 3px 0px 0px #000000',
+                        'hard-lg': '8px 8px 0px 0px #000000',
+                        'hard-xl': '12px 12px 0px 0px #000000',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Brutalist Utilities */
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            overflow-x: hidden;
+        }
+
+        .brutal-border {
+            border: 3px solid black;
+        }
+
+        .brutal-btn {
+            transition: all 0.1s ease;
+        }
+        
+        .brutal-btn:active {
+            transform: translate(5px, 5px);
+            box-shadow: 0px 0px 0px 0px #000000;
+        }
+
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .marquee-content {
+            display: inline-block;
+            animation: scroll 20s linear infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Pattern Background */
+        .dot-pattern {
+            background-image: radial-gradient(#000 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .diagonal-pattern {
+            background: repeating-linear-gradient(
+                45deg,
+                #f3f4f6,
+                #f3f4f6 10px,
+                #ffffff 10px,
+                #ffffff 20px
+            );
+        }
+        
+        /* Typing Indicator */
+        .typing-dot {
+            animation: typing 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="font-sans selection:bg-neon-green selection:text-black">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white border-b-4 border-black top-0 left-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div onclick="scrollToTop()" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <div class="w-10 h-10 bg-neon-green border-2 border-black flex items-center justify-center shadow-hard-sm group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
+                        <i class="ph-bold ph-backpack text-2xl"></i>
+                    </div>
+                    <span class="font-display text-2xl tracking-tighter">DORA<span class="text-neon-green bg-black px-1 ml-1">CAMP</span></span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#services" class="font-bold hover:underline decoration-4 decoration-neon-green underline-offset-4">Services</a>
+                    <a href="#earn" class="font-bold hover:underline decoration-4 decoration-neon-green underline-offset-4">Become a Runner</a>
+                    <a href="#calculator" class="font-bold hover:underline decoration-4 decoration-neon-green underline-offset-4">Calculator</a>
+                    <button onclick="showAppMessage()" class="brutal-btn bg-neon-green border-2 border-black px-6 py-2 font-bold shadow-hard hover:bg-white">
+                        Get App
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 border-2 border-black bg-gray-100 shadow-hard-sm focus:outline-none">
+                        <i class="ph-bold ph-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden border-t-2 border-black bg-white p-4 absolute w-full">
+            <a href="#services" class="block py-3 font-bold text-lg border-b-2 border-gray-100">Services</a>
+            <a href="#earn" class="block py-3 font-bold text-lg border-b-2 border-gray-100">Become a Runner</a>
+            <button onclick="showAppMessage()" class="w-full mt-4 brutal-btn bg-neon-green border-2 border-black px-6 py-3 font-bold shadow-hard">
+                Download App
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 md:pt-40 md:pb-20 px-4 max-w-7xl mx-auto relative">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6 z-10">
+                <div class="inline-block bg-black text-white px-4 py-1 font-bold border-2 border-neon-green transform -rotate-2">
+                    CAMPUS LOGISTICS SOLVED
+                </div>
+                <h1 class="font-display text-5xl md:text-7xl leading-tight">
+                    LAZY? BUSY? <br>
+                    <span class="bg-neon-green px-2 border-2 border-black">WE RUN</span> IT.
+                </h1>
+                <p class="text-xl font-medium border-l-4 border-neon-green pl-4 py-2 bg-gray-50">
+                    From the canteen to your hostel room. From the print shop to the exam hall. We deliver everything on campus.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <button onclick="showAppMessage()" class="brutal-btn bg-black text-white border-2 border-black px-8 py-4 font-bold text-xl shadow-hard hover:bg-gray-800 flex items-center justify-center gap-2">
+                        <i class="ph-bold ph-hamburger"></i> Order Now
+                    </button>
+                    <button onclick="document.getElementById('earn').scrollIntoView({behavior: 'smooth'})" class="brutal-btn bg-white text-black border-2 border-black px-8 py-4 font-bold text-xl shadow-hard hover:bg-neon-green flex items-center justify-center gap-2">
+                        <i class="ph-bold ph-money"></i> Earn Money
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hero Visual -->
+            <div class="relative h-full min-h-[400px] flex items-center justify-center">
+                <!-- Decorative Elements -->
+                <div class="absolute top-0 right-10 w-24 h-24 bg-neon-green border-4 border-black rounded-full flex items-center justify-center z-20 shadow-hard animate-bounce">
+                    <span class="font-display text-xl">FAST</span>
+                </div>
+                
+                <!-- Main Card -->
+                <div class="w-full max-w-md bg-white border-4 border-black shadow-hard-xl p-6 transform rotate-2 relative z-10">
+                    <div class="border-b-4 border-black pb-4 mb-4 flex justify-between items-center">
+                        <span class="font-bold text-xl">Active Order #402</span>
+                        <div class="w-4 h-4 bg-red-500 rounded-full border-2 border-black animate-pulse"></div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 p-3 bg-gray-100 border-2 border-black">
+                            <i class="ph-fill ph-hamburger text-3xl"></i>
+                            <div>
+                                <p class="font-bold">Cheese Maggi x 2</p>
+                                <p class="text-sm">Canteen -> Hostel 4</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 p-3 bg-neon-green border-2 border-black">
+                            <i class="ph-fill ph-file-text text-3xl"></i>
+                            <div>
+                                <p class="font-bold">Lab Manual Print</p>
+                                <p class="text-sm">Xerox Shop -> Library</p>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex justify-between items-end">
+                            <div>
+                                <p class="text-xs font-bold uppercase text-gray-500">Runner</p>
+                                <p class="font-bold text-lg">Rohan K.</p>
+                            </div>
+                            <div class="text-3xl font-display">12m left</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Back Card -->
+                <div class="absolute top-4 left-10 w-full max-w-md bg-gray-800 h-full border-4 border-black transform -rotate-1 -z-0"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="bg-neon-green border-y-4 border-black py-4 overflow-hidden rotate-1 scale-105 z-20 relative">
+        <div class="marquee-container">
+            <div class="marquee-content font-display text-2xl md:text-4xl text-black">
+                FOOD DELIVERY • PACKAGE PICKUP • PRINTOUTS • LAUNDRY RUNS • EARN CASH • NO MINIMUM ORDER • CAMPUS EXCLUSIVE • FOOD DELIVERY • PACKAGE PICKUP • PRINTOUTS • LAUNDRY RUNS • EARN CASH • NO MINIMUM ORDER • CAMPUS EXCLUSIVE • 
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 dot-pattern relative">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-6xl bg-white inline-block border-4 border-black px-4 py-2 shadow-hard-lg">
+                    WHAT WE CARRY
+                </h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="bg-white border-4 border-black p-6 shadow-hard hover:-translate-y-2 transition-transform">
+                    <div class="w-16 h-16 bg-black text-neon-green border-2 border-black flex items-center justify-center mb-6 shadow-hard-sm">
+                        <i class="ph-bold ph-pizza text-3xl"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-2">FOOD & SNACKS</h3>
+                    <p class="font-medium mb-4">Midnight cravings? Canteen run? We deliver from all campus food joints directly to your room door.</p>
+                    <ul class="space-y-2 text-sm font-bold">
+                        <li class="flex items-center"><i class="ph-bold ph-check mr-2"></i> No Minimum Order</li>
+                        <li class="flex items-center"><i class="ph-bold ph-check mr-2"></i> Hot & Fresh</li>
+                    </ul>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-neon-green border-4 border-black p-6 shadow-hard hover:-translate-y-2 transition-transform">
+                    <div class="w-16 h-16 bg-white text-black border-2 border-black flex items-center justify-center mb-6 shadow-hard-sm">
+                        <i class="ph-bold ph-package text-3xl"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-2">PACKAGES</h3>
+                    <p class="font-medium mb-4">Package arrived at the main gate? Don't walk in the sun. We'll pick it up and drop it at your hostel.</p>
+                    <ul class="space-y-2 text-sm font-bold">
+                        <li class="flex items-center"><i class="ph-bold ph-check mr-2"></i> Secure Handling</li>
+                        <li class="flex items-center"><i class="ph-bold ph-check mr-2"></i> OTP Verification</li>
+                    </ul>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-white border-4 border-black p-6 shadow-hard hover:-translate-y-2 transition-transform">
+                    <div class="w-16 h-16 bg-black text-white border-2 border-black flex items-center justify-center mb-6 shadow-hard-sm">
+                        <i class="ph-bold ph-printer text-3xl"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-2">PRINTOUTS</h3>
+                    <p class="font-medium mb-4">Send us the PDF. We print it at the campus Xerox shop and deliver it before your class starts.</p>
+                    <ul class="space-y-2 text-sm font-bold">
+                        <li class="flex items-center"><i class="ph-bold ph-check mr-2"></i> B&W / Color</li>
+                        <li class="flex items-center"><i class="ph-bold ph-check mr-2"></i> Spiral Binding</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Earn Section (Inverted) -->
+    <section id="earn" class="py-20 bg-black text-white border-y-4 border-black">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+            <div class="order-2 md:order-1">
+                <div class="relative">
+                    <!-- Decor -->
+                    <div class="absolute -top-10 -left-10 text-8xl opacity-20 font-display text-neon-green rotate-12">₹₹₹</div>
+                    
+                    <div class="bg-gray-800 border-4 border-neon-green p-8 shadow-[8px_8px_0px_0px_#ccff00]">
+                        <h3 class="font-display text-3xl mb-6 text-neon-green">RUNNER PERKS</h3>
+                        <ul class="space-y-4 text-lg">
+                            <li class="flex items-start gap-3">
+                                <i class="ph-fill ph-bicycle text-neon-green text-2xl mt-1"></i>
+                                <div>
+                                    <span class="font-bold">Flexible Hours</span>
+                                    <p class="text-gray-400 text-sm">Work only when you are free. Between classes or evenings.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="ph-fill ph-lightning text-neon-green text-2xl mt-1"></i>
+                                <div>
+                                    <span class="font-bold">Instant Payouts</span>
+                                    <p class="text-gray-400 text-sm">Get paid directly to bank account after every completion of delivery.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="ph-fill ph-sneaker text-neon-green text-2xl mt-1"></i>
+                                <div>
+                                    <span class="font-bold">Stay Fit</span>
+                                    <p class="text-gray-400 text-sm">Get your steps in while filling your wallet.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="order-1 md:order-2">
+                <div class="inline-block bg-neon-green text-black px-3 py-1 font-bold mb-4 border-2 border-white transform -rotate-1">
+                    FOR STUDENTS, BY STUDENTS
+                </div>
+                <h2 class="font-display text-5xl mb-6">TURN SPARE TIME INTO <span class="text-neon-green underline decoration-4 underline-offset-8">CASH</span>.</h2>
+                <p class="text-xl text-gray-300 mb-8">
+                    Join the DORA Camp squad. Whether you have a cycle or just good shoes, you can earn up to ₹1500/month just by moving stuff around campus.
+                </p>
+                
+                <!-- Simple Calculator -->
+                <div id="calculator" class="bg-white text-black p-6 border-4 border-white shadow-hard">
+                    <h4 class="font-bold text-lg mb-4 uppercase">Earnings Calculator</h4>
+                    <div class="mb-4">
+                        <label class="block font-bold mb-2">Deliveries per day: <span id="delivery-count" class="text-neon-green bg-black px-2">5</span></label>
+                        <input type="range" min="1" max="20" value="5" class="w-full h-4 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black border-2 border-black" id="slider">
+                    </div>
+                    <div class="flex justify-between items-center border-t-2 border-black pt-4">
+                        <span class="font-bold">Potential Monthly Income:</span>
+                        <span class="font-display text-3xl text-neon-green bg-black px-2 border-2 border-transparent" id="earnings">₹1,500</span>
+                    </div>
+                </div>
+                
+                <button onclick="showAppMessage()" class="mt-8 brutal-btn bg-neon-green text-black w-full md:w-auto border-2 border-white px-8 py-4 font-bold text-xl shadow-[4px_4px_0px_0px_#ffffff] hover:shadow-none hover:bg-white">
+                    Start Earning Now
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section class="py-20 bg-brutal-grey diagonal-pattern">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="font-display text-4xl mb-12 bg-white inline-block border-4 border-black px-6 py-2">HOW IT WORKS</h2>
+            
+            <div class="space-y-4 relative">
+                <!-- Connecting Line (Desktop) -->
+                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-black -translate-x-1/2 z-0 border-l-2 border-r-2 border-black bg-stripes"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="w-full md:w-5/12 bg-white border-4 border-black p-4 shadow-hard text-right">
+                        <h4 class="font-display text-xl">1. PLACE REQUEST</h4>
+                        <p>Choose food, print, or package. Add location.</p>
+                    </div>
+                    <div class="w-12 h-12 bg-neon-green border-4 border-black rounded-full flex items-center justify-center font-display text-xl">1</div>
+                    <div class="w-full md:w-5/12 md:opacity-0"></div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="w-full md:w-5/12 md:opacity-0 hidden md:block"></div>
+                    <div class="w-12 h-12 bg-black text-white border-4 border-black rounded-full flex items-center justify-center font-display text-xl">2</div>
+                    <div class="w-full md:w-5/12 bg-white border-4 border-black p-4 shadow-hard text-left">
+                        <h4 class="font-display text-xl">2. RUNNER ASSIGNED</h4>
+                        <p>A student nearby accepts your request instantly.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="w-full md:w-5/12 bg-white border-4 border-black p-4 shadow-hard text-right">
+                        <h4 class="font-display text-xl">3. DELIVERY</h4>
+                        <p>Track real-time. Pay via UPI upon delivery.</p>
+                    </div>
+                    <div class="w-12 h-12 bg-neon-green border-4 border-black rounded-full flex items-center justify-center font-display text-xl">3</div>
+                    <div class="w-full md:w-5/12 md:opacity-0"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t-4 border-black pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-2">
+                    <div onclick="scrollToTop()" class="flex items-center gap-2 mb-4 cursor-pointer hover:opacity-80 transition-opacity">
+                        <div class="w-8 h-8 bg-neon-green border-2 border-black flex items-center justify-center">
+                            <i class="ph-bold ph-backpack"></i>
+                        </div>
+                        <span class="font-display text-2xl">DORA<span class="text-neon-green bg-black px-1 ml-1">CAMP</span></span>
+                    </div>
+                    <p class="font-medium text-lg max-w-md">
+                        The ultimate campus delivery network. We save you time so you can sleep, study, or party (in that order).
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-display text-xl mb-4 border-b-2 border-black inline-block">LINKS</h4>
+                    <ul class="space-y-2 font-bold">
+                        <li><a href="javascript:void(0)" onclick="openModal('About Us', 'We are a group of students from SRM - AP University who realized walking in the sun sucks. So we built DORA Camp.')" class="hover:bg-neon-green hover:pl-2 transition-all">About Us</a></li>
+                        <li><a href="javascript:void(0)" onclick="openModal('Leaderboard', '<div class=\'space-y-2\'><div class=\'flex justify-between border-b-2 border-black pb-1\'><span>1. Rohan K.</span><span>₹4,500</span></div><div class=\'flex justify-between border-b-2 border-black pb-1\'><span>2. Priya S.</span><span>₹3,850</span></div><div class=\'flex justify-between border-b-2 border-black pb-1\'><span>3. Amit B.</span><span>₹3,100</span></div></div>')" class="hover:bg-neon-green hover:pl-2 transition-all">Runner Leaderboard</a></li>
+                        <!-- UPDATED: Support now opens Static Modal instead of AI Chat -->
+                        <li><a href="javascript:void(0)" onclick="openModal('Support & FAQ', '<strong>How do I join?</strong><br>Click \'Become a Runner\' and fill the form.<br><br><strong>What are the charges?</strong><br>Delivery fee depends on distance, usually ₹10.<br><br><strong>Contact Us:</strong><br>ramtej_maturi@srmap.edu.in | +91 9347471559')" class="hover:bg-neon-green hover:pl-2 transition-all">Support</a></li>
+                        <li><a href="javascript:void(0)" onclick="openModal('Terms & Conditions', '1. We are not responsible if the mess food tastes bad.<br>2. Runners must not eat the french fries on the way.<br>3. No delivery of contraband items.')" class="hover:bg-neon-green hover:pl-2 transition-all">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-display text-xl mb-4 border-b-2 border-black inline-block">CONTACT</h4>
+                    <ul class="space-y-2 font-bold">
+                        <li>ramtej_maturi@srmap.edu.in</li>
+                        <li>+91 9347471559</li>
+                        <li class="flex gap-2 mt-4">
+                            <a href="#" class="w-10 h-10 bg-black text-white flex items-center justify-center border-2 border-transparent hover:bg-white hover:text-black hover:border-black transition-all"><i class="ph-bold ph-instagram-logo text-xl"></i></a>
+                            <a href="#" class="w-10 h-10 bg-black text-white flex items-center justify-center border-2 border-transparent hover:bg-white hover:text-black hover:border-black transition-all"><i class="ph-bold ph-twitter-logo text-xl"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t-2 border-black pt-8 flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-sm">
+                <p>&copy; 2023 DORA Camp Technologies.</p>
+                <p>MADE WITH <i class="ph-fill ph-heart text-red-500"></i> AND CAFFEINE ON CAMPUS.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Brutalist Modal (Static) -->
+    <div id="modal-overlay" class="hidden fixed inset-0 bg-black/50 z-[60] backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white border-4 border-black shadow-hard-xl max-w-lg w-full relative transform transition-all">
+            <button onclick="closeModal()" class="absolute top-2 right-2 p-1 hover:bg-red-500 hover:text-white border-2 border-transparent hover:border-black transition-colors">
+                <i class="ph-bold ph-x text-2xl"></i>
+            </button>
+            <div class="bg-neon-green border-b-4 border-black p-4">
+                <h3 id="modal-title" class="font-display text-2xl uppercase">MESSAGE</h3>
+            </div>
+            <div class="p-6">
+                <div id="modal-content" class="font-medium text-lg">
+                    <!-- Content goes here -->
+                </div>
+                <button onclick="closeModal()" class="mt-6 w-full brutal-btn bg-black text-white border-2 border-black py-3 font-bold hover:bg-gray-800">
+                    OKAY, GOT IT
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Interface REMOVED -->
+
+    <!-- Scripts for Interaction -->
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Modal Logic
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+
+        function openModal(title, content) {
+            modalTitle.textContent = title;
+            modalContent.innerHTML = content;
+            modalOverlay.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.add('hidden');
+        }
+
+        function showAppMessage() {
+            const formLink = "https://forms.gle/sKpsiey34N7Qu8Q5A";
+            const content = `
+                Thanks for your interest! We will launch soon. <br><br>
+                We want to solve your actual pain points. Help us build the perfect delivery app for you by filling out this quick survey.
+                <br><br>
+                <a href="${formLink}" target="_blank" class="block w-full text-center brutal-btn bg-neon-green text-black border-2 border-black py-3 font-bold hover:bg-white shadow-hard-sm hover:shadow-none transition-all flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-clipboard-text"></i> FILL SURVEY FORM
+                </a>
+            `;
+            openModal('Coming Soon', content);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Close modal on clicking background
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        // Earnings Calculator Logic
+        const slider = document.getElementById('slider');
+        const deliveryCount = document.getElementById('delivery-count');
+        const earnings = document.getElementById('earnings');
+        
+        // Assumptions: Avg earning per delivery = ₹10. Days worked = 30.
+        const avgRate = 10;
+        const days = 30;
+
+        slider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            deliveryCount.textContent = val;
+            
+            // Calculate monthly
+            const total = val * avgRate * days;
+            earnings.textContent = `₹${total.toLocaleString()}`;
+        });
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu if open
+                menu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
