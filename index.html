@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DORA Camp | Campus Delivery</title>
     <!-- FAVICON ADDED BELOW -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='0' y='0' width='100' height='100' fill='%23ccff00'/><rect x='5' y='5' width='90' height='90' fill='none' stroke='black' stroke-width='10'/><path d='M30 40h40v40H30z' fill='none' stroke='black' stroke-width='8'/><path d='M40 40V30a10 10 0 0 1 20 0v10' fill='none' stroke='black' stroke-width='8'/><rect x='40' y='55' width='20' height='15' fill='none' stroke='black' stroke-width='6'/></svg>">
@@ -37,10 +37,15 @@
 
     <style>
         /* Custom Brutalist Utilities */
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
         body {
             background-color: #ffffff;
             color: #000000;
-            overflow-x: hidden;
         }
 
         .brutal-border {
@@ -56,19 +61,25 @@
             box-shadow: 0px 0px 0px 0px #000000;
         }
 
-        .marquee-container {
+        .marquee-wrapper {
+            width: 100%;
             overflow: hidden;
+            background: #ccff00;
+            border-top: 4px solid black;
+            border-bottom: 4px solid black;
             white-space: nowrap;
+            display: flex; /* KEY FIX: Flexbox for seamless loop */
         }
-        
+
         .marquee-content {
-            display: inline-block;
-            animation: scroll 20s linear infinite;
+            flex-shrink: 0; /* KEY FIX: Prevents text from squishing */
+            animation: scroll 40s linear infinite; /* SLOWED DOWN from 20s */
+            /* padding-left: 100%;  REMOVED to show text immediately */
         }
         
         @keyframes scroll {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+            100% { transform: translateX(-100%); }
         }
 
         /* Pattern Background */
@@ -86,18 +97,6 @@
                 #ffffff 20px
             );
         }
-        
-        /* Typing Indicator */
-        .typing-dot {
-            animation: typing 1.4s infinite ease-in-out both;
-        }
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        
-        @keyframes typing {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
     </style>
 </head>
 <body class="font-sans selection:bg-neon-green selection:text-black">
@@ -107,11 +106,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
-                <div onclick="scrollToTop()" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                <div onclick="scrollToTop()" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group select-none">
                     <div class="w-10 h-10 bg-neon-green border-2 border-black flex items-center justify-center shadow-hard-sm group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none transition-all">
                         <i class="ph-bold ph-backpack text-2xl"></i>
                     </div>
-                    <span class="font-display text-2xl tracking-tighter">DORA<span class="text-neon-green bg-black px-1 ml-1">CAMP</span></span>
+                    <span class="font-display text-xl md:text-2xl tracking-tighter">DORA<span class="text-neon-green bg-black px-1 ml-1">CAMP</span></span>
                 </div>
 
                 <!-- Desktop Menu -->
@@ -126,7 +125,7 @@
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="p-2 border-2 border-black bg-gray-100 shadow-hard-sm focus:outline-none">
+                    <button id="mobile-menu-btn" class="p-2 border-2 border-black bg-gray-100 shadow-hard-sm focus:outline-none active:shadow-none active:translate-x-[2px] active:translate-y-[2px]">
                         <i class="ph-bold ph-list text-2xl"></i>
                     </button>
                 </div>
@@ -134,7 +133,7 @@
         </div>
 
         <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden md:hidden border-t-2 border-black bg-white p-4 absolute w-full">
+        <div id="mobile-menu" class="hidden md:hidden border-t-2 border-black bg-white p-4 absolute w-full z-40 shadow-xl">
             <a href="#services" class="block py-3 font-bold text-lg border-b-2 border-gray-100">Services</a>
             <a href="#earn" class="block py-3 font-bold text-lg border-b-2 border-gray-100">Become a Runner</a>
             <button onclick="showAppMessage()" class="w-full mt-4 brutal-btn bg-neon-green border-2 border-black px-6 py-3 font-bold shadow-hard">
@@ -144,55 +143,55 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-32 pb-16 md:pt-40 md:pb-20 px-4 max-w-7xl mx-auto relative">
+    <section class="pt-28 pb-12 md:pt-40 md:pb-20 px-4 max-w-7xl mx-auto relative overflow-hidden">
         <div class="grid md:grid-cols-2 gap-12 items-center">
             <div class="space-y-6 z-10">
-                <div class="inline-block bg-black text-white px-4 py-1 font-bold border-2 border-neon-green transform -rotate-2">
+                <div class="inline-block bg-black text-white px-4 py-1 font-bold border-2 border-neon-green transform -rotate-2 text-sm md:text-base">
                     CAMPUS LOGISTICS SOLVED
                 </div>
-                <h1 class="font-display text-5xl md:text-7xl leading-tight">
+                <h1 class="font-display text-4xl sm:text-5xl md:text-7xl leading-tight break-words">
                     LAZY? BUSY? <br>
-                    <span class="bg-neon-green px-2 border-2 border-black">WE RUN</span> IT.
+                    <span class="bg-neon-green px-2 border-2 border-black inline-block">WE RUN</span> IT.
                 </h1>
-                <p class="text-xl font-medium border-l-4 border-neon-green pl-4 py-2 bg-gray-50">
+                <p class="text-lg md:text-xl font-medium border-l-4 border-neon-green pl-4 py-2 bg-gray-50">
                     From the canteen to your hostel room. From the print shop to the exam hall. We deliver everything on campus.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <button onclick="showAppMessage()" class="brutal-btn bg-black text-white border-2 border-black px-8 py-4 font-bold text-xl shadow-hard hover:bg-gray-800 flex items-center justify-center gap-2">
+                    <button onclick="showAppMessage()" class="brutal-btn bg-black text-white border-2 border-black px-8 py-4 font-bold text-lg md:text-xl shadow-hard hover:bg-gray-800 flex items-center justify-center gap-2 w-full sm:w-auto">
                         <i class="ph-bold ph-hamburger"></i> Order Now
                     </button>
-                    <button onclick="document.getElementById('earn').scrollIntoView({behavior: 'smooth'})" class="brutal-btn bg-white text-black border-2 border-black px-8 py-4 font-bold text-xl shadow-hard hover:bg-neon-green flex items-center justify-center gap-2">
+                    <button onclick="document.getElementById('earn').scrollIntoView({behavior: 'smooth'})" class="brutal-btn bg-white text-black border-2 border-black px-8 py-4 font-bold text-lg md:text-xl shadow-hard hover:bg-neon-green flex items-center justify-center gap-2 w-full sm:w-auto">
                         <i class="ph-bold ph-money"></i> Earn Money
                     </button>
                 </div>
             </div>
 
             <!-- Hero Visual -->
-            <div class="relative h-full min-h-[400px] flex items-center justify-center">
+            <div class="relative mt-8 md:mt-0 h-full min-h-[350px] md:min-h-[400px] flex items-center justify-center px-4">
                 <!-- Decorative Elements -->
-                <div class="absolute top-0 right-10 w-24 h-24 bg-neon-green border-4 border-black rounded-full flex items-center justify-center z-20 shadow-hard animate-bounce">
-                    <span class="font-display text-xl">FAST</span>
+                <div class="absolute top-0 right-4 md:right-10 w-20 h-20 md:w-24 md:h-24 bg-neon-green border-4 border-black rounded-full flex items-center justify-center z-20 shadow-hard animate-bounce">
+                    <span class="font-display text-lg md:text-xl">FAST</span>
                 </div>
                 
                 <!-- Main Card -->
-                <div class="w-full max-w-md bg-white border-4 border-black shadow-hard-xl p-6 transform rotate-2 relative z-10">
+                <div class="w-full max-w-[90vw] md:max-w-md bg-white border-4 border-black shadow-hard-xl p-4 md:p-6 transform rotate-2 relative z-10">
                     <div class="border-b-4 border-black pb-4 mb-4 flex justify-between items-center">
-                        <span class="font-bold text-xl">Active Order #402</span>
+                        <span class="font-bold text-lg md:text-xl">Active Order #402</span>
                         <div class="w-4 h-4 bg-red-500 rounded-full border-2 border-black animate-pulse"></div>
                     </div>
                     <div class="space-y-4">
-                        <div class="flex items-center gap-4 p-3 bg-gray-100 border-2 border-black">
-                            <i class="ph-fill ph-hamburger text-3xl"></i>
-                            <div>
-                                <p class="font-bold">Cheese Maggi x 2</p>
-                                <p class="text-sm">Canteen -> Hostel 4</p>
+                        <div class="flex items-center gap-3 md:gap-4 p-3 bg-gray-100 border-2 border-black">
+                            <i class="ph-fill ph-hamburger text-2xl md:text-3xl flex-shrink-0"></i>
+                            <div class="min-w-0">
+                                <p class="font-bold truncate">Cheese Maggi x 2</p>
+                                <p class="text-sm truncate">Canteen -> Hostel 4</p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-4 p-3 bg-neon-green border-2 border-black">
-                            <i class="ph-fill ph-file-text text-3xl"></i>
-                            <div>
-                                <p class="font-bold">Lab Manual Print</p>
-                                <p class="text-sm">Xerox Shop -> Library</p>
+                        <div class="flex items-center gap-3 md:gap-4 p-3 bg-neon-green border-2 border-black">
+                            <i class="ph-fill ph-file-text text-2xl md:text-3xl flex-shrink-0"></i>
+                            <div class="min-w-0">
+                                <p class="font-bold truncate">Lab Manual Print</p>
+                                <p class="text-sm truncate">Xerox Shop -> Library</p>
                             </div>
                         </div>
                         <div class="mt-6 flex justify-between items-end">
@@ -200,43 +199,46 @@
                                 <p class="text-xs font-bold uppercase text-gray-500">Runner</p>
                                 <p class="font-bold text-lg">Rohan K.</p>
                             </div>
-                            <div class="text-3xl font-display">12m left</div>
+                            <div class="text-2xl md:text-3xl font-display">12m left</div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Back Card -->
-                <div class="absolute top-4 left-10 w-full max-w-md bg-gray-800 h-full border-4 border-black transform -rotate-1 -z-0"></div>
+                <!-- Back Card Shadow -->
+                <div class="absolute top-4 left-4 md:left-10 w-full max-w-[90vw] md:max-w-md bg-gray-800 h-full border-4 border-black transform -rotate-1 -z-0"></div>
             </div>
         </div>
     </section>
 
     <!-- Marquee -->
-    <div class="bg-neon-green border-y-4 border-black py-4 overflow-hidden rotate-1 scale-105 z-20 relative">
-        <div class="marquee-container">
-            <div class="marquee-content font-display text-2xl md:text-4xl text-black">
+    <div class="w-full overflow-hidden transform rotate-1 scale-105 z-20 relative">
+        <div class="marquee-wrapper">
+            <div class="marquee-content font-display text-xl md:text-4xl text-black py-3">
+                FOOD DELIVERY • PACKAGE PICKUP • PRINTOUTS • LAUNDRY RUNS • EARN CASH • NO MINIMUM ORDER • CAMPUS EXCLUSIVE • FOOD DELIVERY • PACKAGE PICKUP • PRINTOUTS • LAUNDRY RUNS • EARN CASH • NO MINIMUM ORDER • CAMPUS EXCLUSIVE • 
+            </div>
+            <div class="marquee-content font-display text-xl md:text-4xl text-black py-3" aria-hidden="true">
                 FOOD DELIVERY • PACKAGE PICKUP • PRINTOUTS • LAUNDRY RUNS • EARN CASH • NO MINIMUM ORDER • CAMPUS EXCLUSIVE • FOOD DELIVERY • PACKAGE PICKUP • PRINTOUTS • LAUNDRY RUNS • EARN CASH • NO MINIMUM ORDER • CAMPUS EXCLUSIVE • 
             </div>
         </div>
     </div>
 
     <!-- Services Section -->
-    <section id="services" class="py-20 dot-pattern relative">
+    <section id="services" class="py-16 md:py-20 dot-pattern relative">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="font-display text-4xl md:text-6xl bg-white inline-block border-4 border-black px-4 py-2 shadow-hard-lg">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="font-display text-3xl md:text-6xl bg-white inline-block border-4 border-black px-4 py-2 shadow-hard-lg mx-auto max-w-full break-words">
                     WHAT WE CARRY
                 </h2>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Service 1 -->
                 <div class="bg-white border-4 border-black p-6 shadow-hard hover:-translate-y-2 transition-transform">
                     <div class="w-16 h-16 bg-black text-neon-green border-2 border-black flex items-center justify-center mb-6 shadow-hard-sm">
                         <i class="ph-bold ph-pizza text-3xl"></i>
                     </div>
                     <h3 class="font-display text-2xl mb-2">FOOD & SNACKS</h3>
-                    <p class="font-medium mb-4">Midnight cravings? Canteen run? We deliver from all campus food joints directly to your room door.</p>
+                    <p class="font-medium mb-4">Lunch rush? Evening snacks? We deliver from all campus food joints directly to your room door.</p>
                     <ul class="space-y-2 text-sm font-bold">
                         <li class="flex items-center"><i class="ph-bold ph-check mr-2"></i> No Minimum Order</li>
                         <li class="flex items-center"><i class="ph-bold ph-check mr-2"></i> Hot & Fresh</li>
@@ -273,16 +275,16 @@
     </section>
 
     <!-- Earn Section (Inverted) -->
-    <section id="earn" class="py-20 bg-black text-white border-y-4 border-black">
+    <section id="earn" class="py-16 md:py-20 bg-black text-white border-y-4 border-black overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
             <div class="order-2 md:order-1">
                 <div class="relative">
-                    <!-- Decor -->
-                    <div class="absolute -top-10 -left-10 text-8xl opacity-20 font-display text-neon-green rotate-12">₹₹₹</div>
+                    <!-- Decor (Hidden on small mobile to prevent overflow) -->
+                    <div class="hidden sm:block absolute -top-10 -left-10 text-8xl opacity-20 font-display text-neon-green rotate-12 select-none">₹₹₹</div>
                     
-                    <div class="bg-gray-800 border-4 border-neon-green p-8 shadow-[8px_8px_0px_0px_#ccff00]">
-                        <h3 class="font-display text-3xl mb-6 text-neon-green">RUNNER PERKS</h3>
-                        <ul class="space-y-4 text-lg">
+                    <div class="bg-gray-800 border-4 border-neon-green p-6 md:p-8 shadow-[8px_8px_0px_0px_#ccff00] relative z-10">
+                        <h3 class="font-display text-2xl md:text-3xl mb-6 text-neon-green">RUNNER PERKS</h3>
+                        <ul class="space-y-4 text-base md:text-lg">
                             <li class="flex items-start gap-3">
                                 <i class="ph-fill ph-bicycle text-neon-green text-2xl mt-1"></i>
                                 <div>
@@ -293,8 +295,8 @@
                             <li class="flex items-start gap-3">
                                 <i class="ph-fill ph-lightning text-neon-green text-2xl mt-1"></i>
                                 <div>
-                                    <span class="font-bold">Instant Payouts</span>
-                                    <p class="text-gray-400 text-sm">Get paid directly to bank account after every completion of delivery.</p>
+                                    <span class="font-bold">Instant Credit</span>
+                                    <p class="text-gray-400 text-sm">Earnings credited to dashboard instantly. Redeem to Bank/UPI daily or monthly.</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-3">
@@ -309,28 +311,28 @@
                 </div>
             </div>
             <div class="order-1 md:order-2">
-                <div class="inline-block bg-neon-green text-black px-3 py-1 font-bold mb-4 border-2 border-white transform -rotate-1">
+                <div class="inline-block bg-neon-green text-black px-3 py-1 font-bold mb-4 border-2 border-white transform -rotate-1 text-sm">
                     FOR STUDENTS, BY STUDENTS
                 </div>
-                <h2 class="font-display text-5xl mb-6">TURN SPARE TIME INTO <span class="text-neon-green underline decoration-4 underline-offset-8">CASH</span>.</h2>
-                <p class="text-xl text-gray-300 mb-8">
-                    Join the DORA Camp squad. Whether you have a cycle or just good shoes, you can earn up to ₹1500/month just by moving stuff around campus.
+                <h2 class="font-display text-3xl md:text-5xl mb-6">TURN SPARE TIME INTO <span class="text-neon-green underline decoration-4 underline-offset-8">CASH</span>.</h2>
+                <p class="text-lg md:text-xl text-gray-300 mb-8">
+                    Join the DORA squad. Whether you have a cycle or just good shoes, you can earn up to ₹6,000/month just by moving stuff around campus.
                 </p>
                 
                 <!-- Simple Calculator -->
-                <div id="calculator" class="bg-white text-black p-6 border-4 border-white shadow-hard">
+                <div id="calculator" class="bg-white text-black p-6 border-4 border-white shadow-hard w-full">
                     <h4 class="font-bold text-lg mb-4 uppercase">Earnings Calculator</h4>
                     <div class="mb-4">
-                        <label class="block font-bold mb-2">Deliveries per day: <span id="delivery-count" class="text-neon-green bg-black px-2">5</span></label>
-                        <input type="range" min="1" max="20" value="5" class="w-full h-4 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black border-2 border-black" id="slider">
+                        <label class="block font-bold mb-2 text-sm md:text-base">Deliveries per day: <span id="delivery-count" class="text-neon-green bg-black px-2">10</span></label>
+                        <input type="range" min="1" max="20" value="10" class="w-full h-4 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black border-2 border-black" id="slider">
                     </div>
-                    <div class="flex justify-between items-center border-t-2 border-black pt-4">
-                        <span class="font-bold">Potential Monthly Income:</span>
-                        <span class="font-display text-3xl text-neon-green bg-black px-2 border-2 border-transparent" id="earnings">₹1,500</span>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-t-2 border-black pt-4 gap-2">
+                        <span class="font-bold text-sm md:text-base">Potential Monthly Income:</span>
+                        <span class="font-display text-2xl md:text-3xl text-neon-green bg-black px-2 border-2 border-transparent" id="earnings">₹3,000</span>
                     </div>
                 </div>
                 
-                <button onclick="showAppMessage()" class="mt-8 brutal-btn bg-neon-green text-black w-full md:w-auto border-2 border-white px-8 py-4 font-bold text-xl shadow-[4px_4px_0px_0px_#ffffff] hover:shadow-none hover:bg-white">
+                <button onclick="showAppMessage()" class="mt-8 brutal-btn bg-neon-green text-black w-full md:w-auto border-2 border-white px-8 py-4 font-bold text-xl shadow-[4px_4px_0px_0px_#ffffff] hover:shadow-none hover:bg-white text-center">
                     Start Earning Now
                 </button>
             </div>
@@ -338,29 +340,29 @@
     </section>
 
     <!-- How it Works -->
-    <section class="py-20 bg-brutal-grey diagonal-pattern">
+    <section class="py-16 md:py-20 bg-brutal-grey diagonal-pattern">
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="font-display text-4xl mb-12 bg-white inline-block border-4 border-black px-6 py-2">HOW IT WORKS</h2>
+            <h2 class="font-display text-3xl md:text-4xl mb-12 bg-white inline-block border-4 border-black px-6 py-2 max-w-full break-words">HOW IT WORKS</h2>
             
-            <div class="space-y-4 relative">
+            <div class="space-y-8 relative">
                 <!-- Connecting Line (Desktop) -->
                 <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-black -translate-x-1/2 z-0 border-l-2 border-r-2 border-black bg-stripes"></div>
 
                 <!-- Step 1 -->
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div class="w-full md:w-5/12 bg-white border-4 border-black p-4 shadow-hard text-right">
+                    <div class="w-full md:w-5/12 bg-white border-4 border-black p-4 shadow-hard text-center md:text-right">
                         <h4 class="font-display text-xl">1. PLACE REQUEST</h4>
                         <p>Choose food, print, or package. Add location.</p>
                     </div>
-                    <div class="w-12 h-12 bg-neon-green border-4 border-black rounded-full flex items-center justify-center font-display text-xl">1</div>
-                    <div class="w-full md:w-5/12 md:opacity-0"></div>
+                    <div class="w-12 h-12 bg-neon-green border-4 border-black rounded-full flex items-center justify-center font-display text-xl shrink-0 z-20">1</div>
+                    <div class="w-full md:w-5/12 md:opacity-0 hidden md:block"></div>
                 </div>
 
                 <!-- Step 2 -->
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div class="w-full md:w-5/12 md:opacity-0 hidden md:block"></div>
-                    <div class="w-12 h-12 bg-black text-white border-4 border-black rounded-full flex items-center justify-center font-display text-xl">2</div>
-                    <div class="w-full md:w-5/12 bg-white border-4 border-black p-4 shadow-hard text-left">
+                    <div class="w-12 h-12 bg-black text-white border-4 border-black rounded-full flex items-center justify-center font-display text-xl shrink-0 z-20">2</div>
+                    <div class="w-full md:w-5/12 bg-white border-4 border-black p-4 shadow-hard text-center md:text-left">
                         <h4 class="font-display text-xl">2. RUNNER ASSIGNED</h4>
                         <p>A student nearby accepts your request instantly.</p>
                     </div>
@@ -368,12 +370,12 @@
 
                 <!-- Step 3 -->
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div class="w-full md:w-5/12 bg-white border-4 border-black p-4 shadow-hard text-right">
+                    <div class="w-full md:w-5/12 bg-white border-4 border-black p-4 shadow-hard text-center md:text-right">
                         <h4 class="font-display text-xl">3. DELIVERY</h4>
                         <p>Track real-time. Pay via UPI upon delivery.</p>
                     </div>
-                    <div class="w-12 h-12 bg-neon-green border-4 border-black rounded-full flex items-center justify-center font-display text-xl">3</div>
-                    <div class="w-full md:w-5/12 md:opacity-0"></div>
+                    <div class="w-12 h-12 bg-neon-green border-4 border-black rounded-full flex items-center justify-center font-display text-xl shrink-0 z-20">3</div>
+                    <div class="w-full md:w-5/12 md:opacity-0 hidden md:block"></div>
                 </div>
             </div>
         </div>
@@ -382,9 +384,9 @@
     <!-- Footer -->
     <footer class="bg-white border-t-4 border-black pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="grid md:grid-cols-4 gap-8 mb-12">
-                <div class="col-span-2">
-                    <div onclick="scrollToTop()" class="flex items-center gap-2 mb-4 cursor-pointer hover:opacity-80 transition-opacity">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div onclick="scrollToTop()" class="flex items-center gap-2 mb-4 cursor-pointer hover:opacity-80 transition-opacity select-none">
                         <div class="w-8 h-8 bg-neon-green border-2 border-black flex items-center justify-center">
                             <i class="ph-bold ph-backpack"></i>
                         </div>
@@ -398,17 +400,17 @@
                 <div>
                     <h4 class="font-display text-xl mb-4 border-b-2 border-black inline-block">LINKS</h4>
                     <ul class="space-y-2 font-bold">
-                        <li><a href="javascript:void(0)" onclick="openModal('About Us', 'We are a group of students from SRM - AP University who realized walking in the sun sucks. So we built DORA Camp.')" class="hover:bg-neon-green hover:pl-2 transition-all">About Us</a></li>
-                        <li><a href="javascript:void(0)" onclick="openModal('Leaderboard', '<div class=\'space-y-2\'><div class=\'flex justify-between border-b-2 border-black pb-1\'><span>1. Rohan K.</span><span>₹4,500</span></div><div class=\'flex justify-between border-b-2 border-black pb-1\'><span>2. Priya S.</span><span>₹3,850</span></div><div class=\'flex justify-between border-b-2 border-black pb-1\'><span>3. Amit B.</span><span>₹3,100</span></div></div>')" class="hover:bg-neon-green hover:pl-2 transition-all">Runner Leaderboard</a></li>
-                        <!-- UPDATED: Support now opens Static Modal instead of AI Chat -->
-                        <li><a href="javascript:void(0)" onclick="openModal('Support & FAQ', '<strong>How do I join?</strong><br>Click \'Become a Runner\' and fill the form.<br><br><strong>What are the charges?</strong><br>Delivery fee depends on distance, usually ₹10.<br><br><strong>Contact Us:</strong><br>ramtej_maturi@srmap.edu.in | +91 9347471559')" class="hover:bg-neon-green hover:pl-2 transition-all">Support</a></li>
-                        <li><a href="javascript:void(0)" onclick="openModal('Terms & Conditions', '1. We are not responsible if the mess food tastes bad.<br>2. Runners must not eat the french fries on the way.<br>3. No delivery of contraband items.')" class="hover:bg-neon-green hover:pl-2 transition-all">Terms & Conditions</a></li>
+                        <li><a href="javascript:void(0)" onclick="openModal('About Us', 'We are a group of students from Hostel 4 who realized walking in the sun sucks. So we built DORA.')" class="hover:bg-neon-green hover:pl-2 transition-all block py-1">About Us</a></li>
+                        <li><a href="javascript:void(0)" onclick="openModal('Leaderboard', '<div class=\'space-y-2\'><div class=\'flex justify-between border-b-2 border-black pb-1\'><span>1. Rohan K.</span><span>₹4,500</span></div><div class=\'flex justify-between border-b-2 border-black pb-1\'><span>2. Priya S.</span><span>₹3,850</span></div><div class=\'flex justify-between border-b-2 border-black pb-1\'><span>3. Amit B.</span><span>₹3,100</span></div></div>')" class="hover:bg-neon-green hover:pl-2 transition-all block py-1">Runner Leaderboard</a></li>
+                        <!-- UPDATED SENTENCE BELOW -->
+                        <li><a href="javascript:void(0)" onclick="openModal('Support & FAQ', '<strong>How do I join?</strong><br>Scroll down and click \'Start Earning Now\' to register.<br><br><strong>What are the charges?</strong><br>A delivery fee of ₹15 applies to compensate our runners and keep the service running.<br><br><strong>Contact Us:</strong><br>ramtej_maturi@srmap.edu.in | +91 9347471559')" class="hover:bg-neon-green hover:pl-2 transition-all block py-1">Support</a></li>
+                        <li><a href="javascript:void(0)" onclick="openModal('Terms & Conditions', '1. We are not responsible if the mess food tastes bad.<br>2. Runners must not eat the french fries on the way.<br>3. No delivery of contraband items.')" class="hover:bg-neon-green hover:pl-2 transition-all block py-1">Terms & Conditions</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="font-display text-xl mb-4 border-b-2 border-black inline-block">CONTACT</h4>
-                    <ul class="space-y-2 font-bold">
+                    <ul class="space-y-2 font-bold break-words">
                         <li>ramtej_maturi@srmap.edu.in</li>
                         <li>+91 9347471559</li>
                         <li class="flex gap-2 mt-4">
@@ -419,8 +421,8 @@
                 </div>
             </div>
             
-            <div class="border-t-2 border-black pt-8 flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-sm">
-                <p>&copy; 2023 DORA Camp Technologies.</p>
+            <div class="border-t-2 border-black pt-8 flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-xs md:text-sm text-center">
+                <p>&copy; 2025 DORA Camp Technologies.</p>
                 <p>MADE WITH <i class="ph-fill ph-heart text-red-500"></i> AND CAFFEINE ON CAMPUS.</p>
             </div>
         </div>
@@ -428,15 +430,15 @@
 
     <!-- Custom Brutalist Modal (Static) -->
     <div id="modal-overlay" class="hidden fixed inset-0 bg-black/50 z-[60] backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white border-4 border-black shadow-hard-xl max-w-lg w-full relative transform transition-all">
-            <button onclick="closeModal()" class="absolute top-2 right-2 p-1 hover:bg-red-500 hover:text-white border-2 border-transparent hover:border-black transition-colors">
+        <div class="bg-white border-4 border-black shadow-hard-xl max-w-lg w-full relative transform transition-all max-h-[90vh] flex flex-col">
+            <button onclick="closeModal()" class="absolute top-2 right-2 p-1 hover:bg-red-500 hover:text-white border-2 border-transparent hover:border-black transition-colors z-10">
                 <i class="ph-bold ph-x text-2xl"></i>
             </button>
-            <div class="bg-neon-green border-b-4 border-black p-4">
-                <h3 id="modal-title" class="font-display text-2xl uppercase">MESSAGE</h3>
+            <div class="bg-neon-green border-b-4 border-black p-4 flex-shrink-0">
+                <h3 id="modal-title" class="font-display text-xl md:text-2xl uppercase pr-8">MESSAGE</h3>
             </div>
-            <div class="p-6">
-                <div id="modal-content" class="font-medium text-lg">
+            <div class="p-6 overflow-y-auto">
+                <div id="modal-content" class="font-medium text-base md:text-lg break-words">
                     <!-- Content goes here -->
                 </div>
                 <button onclick="closeModal()" class="mt-6 w-full brutal-btn bg-black text-white border-2 border-black py-3 font-bold hover:bg-gray-800">
@@ -445,8 +447,6 @@
             </div>
         </div>
     </div>
-
-    <!-- AI Chat Interface REMOVED -->
 
     <!-- Scripts for Interaction -->
     <script>
@@ -458,6 +458,13 @@
             menu.classList.toggle('hidden');
         });
 
+        // Close mobile menu when clicking a link
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
         // Modal Logic
         const modalOverlay = document.getElementById('modal-overlay');
         const modalTitle = document.getElementById('modal-title');
@@ -467,14 +474,18 @@
             modalTitle.textContent = title;
             modalContent.innerHTML = content;
             modalOverlay.classList.remove('hidden');
+            // Prevent background scrolling
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
             modalOverlay.classList.add('hidden');
+            // Restore background scrolling
+            document.body.style.overflow = '';
         }
 
         function showAppMessage() {
-            const formLink = "https://forms.gle/sKpsiey34N7Qu8Q5A";
+            const formLink = "https://forms.gle/Q8aBiGkTZxMikYSd7";
             const content = `
                 Thanks for your interest! We will launch soon. <br><br>
                 We want to solve your actual pain points. Help us build the perfect delivery app for you by filling out this quick survey.
@@ -493,6 +504,13 @@
         // Close modal on clicking background
         modalOverlay.addEventListener('click', (e) => {
             if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modalOverlay.classList.contains('hidden')) {
                 closeModal();
             }
         });
@@ -519,11 +537,17 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-                // Close mobile menu if open
-                menu.classList.add('hidden');
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    // Close mobile menu if open
+                    menu.classList.add('hidden');
+                }
             });
         });
     </script>
